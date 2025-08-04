@@ -5,6 +5,21 @@ export interface WeatherProps {
   lon: string;
   onClose: () => void;
 }
+export interface WeatherData {
+  current_weather: {
+    temperature: number;
+    weathercode: number;
+    windspeed: number;
+    winddirection: number;
+    time: string;
+  };
+  daily: {
+    temperature_2m_max: number[];
+    temperature_2m_min: number[];
+    time: string[];
+  };
+}
+
 export interface User {
   gender: string;
   name: {

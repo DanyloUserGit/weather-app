@@ -4,6 +4,7 @@ import Button from "../global/Button";
 import Typography from "../global/Typography";
 import Modal from "../weather/Modal";
 import { userApiInstance } from "@/lib/users/userApi";
+import Image from "next/image";
 
 export default function Card({
   user,
@@ -28,7 +29,7 @@ export default function Card({
 
   return (
     <div className="bg-neutral-700 rounded-xl shadow p-4 flex flex-col items-center text-center">
-      <img
+      <Image
         src={user.picture.large}
         className="w-24 h-24 rounded-full mb-4"
         alt="Profile"

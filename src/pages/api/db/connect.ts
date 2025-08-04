@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 
 const MONGO_LINK = process.env.MONGO_LINK!;
 
@@ -6,21 +6,29 @@ if (!MONGO_LINK) {
   throw new Error("Invalid Mongo link");
 }
 
-let cached = (global as any).mongoose;
-
-if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+interface MongooseGlobal {
+  conn: Mongoose | null;
+  promise: Promise<Mongoose> | null;
 }
 
-async function connect() {
-  if (cached.conn) {
-    return cached.conn;
-  }
+declare global {
+  var mongoose: MongooseGlobal | undefined;
+}
+
+const cached: MongooseGlobal = global.mongoose ?? {
+  conn: null,
+  promise: null,
+};
+
+async function connect(): Promise<Mongoose> {
+  if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGO_LINK).then((mongoose) => mongoose);
   }
+
   cached.conn = await cached.promise;
+  global.mongoose = cached;
   return cached.conn;
 }
 

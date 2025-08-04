@@ -1,14 +1,17 @@
 import { weatherInstance } from "@/lib/weather";
-import { WeatherProps } from "@/types";
+import { WeatherData, WeatherProps } from "@/types";
 import { useEffect, useState } from "react";
 import Spin from "../global/Spin";
 import Typography from "../global/Typography";
+import { AxiosResponse } from "axios";
 
 export default function Modal({ lat, lon, onClose }: WeatherProps) {
-  const [weather, setWeather] = useState<any>(null);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
 
   const fetchWeather = async () => {
-    const res = await weatherInstance(`?lat=${lat}&lon=${lon}`);
+    const res: AxiosResponse<WeatherData> = await weatherInstance(
+      `?lat=${lat}&lon=${lon}`
+    );
     setWeather(res.data);
   };
 
